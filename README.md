@@ -20,6 +20,6 @@ Then, the app will be running in your emulator or device.
 
 You can also see the video demonstation below: 
 
-https://drive.google.com/file/d/1R_Do6n3feaeNNSEdBTrO5RwRYdL6sChn/view?usp=drivesdk
+https://drive.google.com/file/d/1GTmy22caR-s5hHtgSH-D2SCrAJYUgCAr/view?usp=drivesdk
 
 Thank you! 
