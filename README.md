@@ -1,4 +1,4 @@
-REACT NATIVE EXAM BY IT AMERICANO
+SIMPLE REACT NATIVE TODO APP
 
 To Run this App, just simply clone it or download it from the link below: git clone https://github.com/Enitsaj13/TodoAppExam.git
 
