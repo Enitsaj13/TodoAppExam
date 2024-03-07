@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: SPACING.space_20
     },
     button: {
-        backgroundColor: COLORS.primaryBlue,
+        backgroundColor: COLORS.primaryColor,
         borderRadius: BORDERRADIUS.radius_25,
         alignItems: 'center',
         paddingVertical: SPACING.space_15,

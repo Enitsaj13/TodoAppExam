@@ -1,15 +1,16 @@
-import { StyleSheet, Platform } from 'react-native';
-import { BORDERRADIUS, COLORS, FONTSIZE, SPACING } from '@/themes/theme';
+import { StyleSheet } from 'react-native';
+import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING, } from '@/themes/theme';
 
 const styles = StyleSheet.create({
     taskContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
         paddingHorizontal: SPACING.space_12,
         backgroundColor: COLORS.primaryWhite,
         height: 50,
-        width: 340,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        alignSelf: 'center',
+        width: '95%',
         borderRadius: BORDERRADIUS.radius_8,
     },
     taskTitle: {
@@ -17,6 +18,7 @@ const styles = StyleSheet.create({
         marginLeft: SPACING.space_30,
         paddingHorizontal: SPACING.space_12,
         fontSize: FONTSIZE.size_16,
+        fontFamily: FONTFAMILY.poppins_regular
     },
     badgesContainer: {
         flexDirection: 'row',

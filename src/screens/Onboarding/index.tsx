@@ -1,20 +1,18 @@
-import React, { useState } from 'react';
-import { Text, View, SafeAreaView, Pressable } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { StatusBar } from 'expo-status-bar';
-import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
-import { Directions, FlingGestureHandler } from 'react-native-gesture-handler';
+import React from 'react'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import styles from './styles';
+import { StyleSheet, Text, View, Image } from 'react-native'
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '@/themes/theme'
+import AppButton from '@/components/Button'
+
 
 type RootStackParamList = {
-    TabNavigator: undefined; // or any other parameters if needed
+    SignUpScreen: undefined; // or any other parameters if needed
     // other screen names and their parameters...
 };
 
 type OnboardingScreenNavigationProp = NativeStackNavigationProp<
     RootStackParamList,
-    'TabNavigator' // Specify the screen name you want to navigate to
+    'SignUpScreen' // Specify the screen name you want to navigate to
 >;
 
 interface OnboardingScreenProps {
@@ -22,118 +20,55 @@ interface OnboardingScreenProps {
 }
 
 const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ navigation }) => {
-    const [screenIndex, setScreenIndex] = useState(0);
-    const translationX = useSharedValue(0);
-
-    const onboardingSteps = [
-        {
-            icon: 'snowflake',
-            title: 'Welcome #TodoApp',
-            description: 'A simple React Native Application for you.',
-        },
-        {
-            icon: 'people-arrows',
-            title: 'Stay organized and productive',
-            description: 'Manage your tasks effectively and accomplish your goals with our intuitive todo app',
-        },
-        {
-            icon: 'book-reader',
-            title: 'Support Educational Initiatives',
-            description:
-                'Contribute to our mission to provide educational opportunities for children. Help us ensure every task completed contributes to this noble cause.',
-
-        },
-    ];
-
-    const data = onboardingSteps[screenIndex];
-
-    const onContinue = () => {
-        const isLastScreen = screenIndex === onboardingSteps.length - 1;
-        if (isLastScreen) {
-            endOnboarding();
-            navigation.navigate('TabNavigator'); // Navigate to task screen
-        } else {
-            setScreenIndex(screenIndex + 1);
-        }
-    };
-
-    const onBack = () => {
-        const isFirstScreen = screenIndex === 0;
-        if (isFirstScreen) {
-            endOnboarding();
-        } else {
-            setScreenIndex(screenIndex - 1);
-        }
-    };
-
-    const animatedStyle = useAnimatedStyle(() => {
-        return {
-            transform: [{ translateX: translationX.value }],
-        };
-    });
-
-    const endOnboarding = () => {
-        navigation.navigate('TabNavigator');
-        setScreenIndex(0);
-    };
-
     return (
-        <SafeAreaView style={styles.page}>
-            <StatusBar style="light" />
-
-            <View style={styles.stepIndicatorContainer}>
-                {onboardingSteps.map((step, index) => (
-                    <View
-                        key={index}
-                        style={[
-                            styles.stepIndicator,
-                            { backgroundColor: index === screenIndex ? '#0b80d4' : 'grey' },
-                        ]}
-                    />
-                ))}
+        <View style={styles.container}>
+            <Image
+                source={require('@/assets/images/background.png')}
+                resizeMode='contain'
+                style={styles.image}
+            />
+            <View style={styles.titleContainer}>
+                <Text style={styles.title}>TaskTrek: Navigate, Organize, Achieve!</Text>
+                <Text style={styles.subTitle}>
+                    Navigate Your Busy Schedule with Ease: A Comprehensive Task Management
+                    Companion Designed to Simplify Your Life, Boost Your Productivity,
+                    and Bring Your Goals Within Reach.
+                </Text>
             </View>
-
-            <FlingGestureHandler
-                direction={Directions.LEFT}
-                onHandlerStateChange={({ nativeEvent }) => {
-                    if (nativeEvent.state === 5) {
-                        onContinue();
-                    }
-                }}
-            >
-                <FlingGestureHandler
-                    direction={Directions.RIGHT}
-                    onHandlerStateChange={({ nativeEvent }) => {
-                        if (nativeEvent.state === 5) {
-                            onBack();
-                        }
-                    }}
-                >
-                    <Animated.View style={[styles.pageContent, animatedStyle]}>
-                        <FontAwesome5
-                            style={styles.image}
-                            name={data.icon}
-                            size={150}
-                            color="#0b80d4"
-                        />
-                        <View style={styles.footer}>
-                            <Text style={styles.title}>{data.title}</Text>
-                            <Text style={styles.description}>{data.description}</Text>
-                            <View style={styles.buttonsRow}>
-                                <Text onPress={endOnboarding} style={styles.buttonText}>
-                                    Skip
-                                </Text>
-
-                                <Pressable onPress={onContinue} style={styles.button}>
-                                    <Text style={styles.buttonText}>Continue</Text>
-                                </Pressable>
-                            </View>
-                        </View>
-                    </Animated.View>
-                </FlingGestureHandler>
-            </FlingGestureHandler>
-        </SafeAreaView>
-    );
+            <AppButton title='Get Started'
+                onPress={() => navigation.navigate('SignUpScreen')}
+                style={{ marginTop: SPACING.space_40 }} />
+        </View>
+    )
 }
 
-export default OnboardingScreen;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: COLORS.primaryWhite
+    },
+    image: {
+        width: 260,
+        height: 260
+    },
+    titleContainer: {
+        marginVertical: SPACING.space_40,
+        marginHorizontal: SPACING.space_24
+    },
+    title: {
+        textAlign: 'center',
+        fontFamily: FONTFAMILY.poppins_bold,
+        fontSize: FONTSIZE.size_16,
+        color: COLORS.primaryBlack,
+        marginBottom: SPACING.space_18
+    },
+    subTitle: {
+        fontFamily: FONTFAMILY.poppins_regular,
+        fontSize: FONTSIZE.size_14,
+        textAlign: 'justify'
+    }
+})
+
+export default OnboardingScreen

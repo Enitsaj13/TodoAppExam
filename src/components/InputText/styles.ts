@@ -1,24 +1,26 @@
 
 import { StyleSheet } from 'react-native';
-import { COLORS, FONTSIZE, SPACING } from '@/themes/theme';
+import { COLORS, FONTSIZE, SPACING, FONTFAMILY, BORDERRADIUS } from '@/themes/theme';
 
 const styles = StyleSheet.create({
     inputTextContainer: {
-        width: '100%',
-        height: 20,
-        marginVertical: 10,
+        width: '80%',
+        marginVertical: SPACING.space_10,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 1.2,
+        borderColor: COLORS.primarySecondaryWhite,
+        backgroundColor: COLORS.primaryWhite,
+        borderRadius: BORDERRADIUS.radius_10,
     },
     inputTextStyle: {
         flex: 1,
-        height: 60,
-        width: '100%',
-        color: COLORS.primaryWhite,
-        justifyContent: 'center',
-        fontSize: FONTSIZE.size_16,
-        backgroundColor: COLORS.primaryWhite,
-        marginHorizontal: SPACING.space_30
+        height: 50,
+        paddingHorizontal: SPACING.space_20,
+        color: COLORS.primaryBlack,
+        fontSize: FONTSIZE.size_14,
+        fontFamily: FONTFAMILY.poppins_regular,
     }
 });
 

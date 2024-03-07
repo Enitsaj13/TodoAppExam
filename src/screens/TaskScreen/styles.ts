@@ -1,7 +1,6 @@
 // seperate the styling
-
-import { StyleSheet } from 'react-native';
-import { COLORS, BORDERRADIUS, FONTSIZE, SPACING } from '@/themes/theme';
+import { StyleSheet, Platform } from 'react-native';
+import { COLORS, BORDERRADIUS, FONTSIZE, SPACING, FONTFAMILY } from '@/themes/theme';
 
 const styles = StyleSheet.create({
     container: {
@@ -22,7 +21,7 @@ const styles = StyleSheet.create({
     addTodoContainer: {
         height: 40,
         width: 40,
-        backgroundColor: COLORS.primaryBlue,
+        backgroundColor: COLORS.primaryColor,
         borderRadius: BORDERRADIUS.radius_20,
         justifyContent: 'center',
         alignItems: 'center',
@@ -34,12 +33,12 @@ const styles = StyleSheet.create({
         color: COLORS.primaryBlack,
         justifyContent: 'center',
         fontSize: FONTSIZE.size_18,
-        fontWeight: '500',
+        fontFamily: FONTFAMILY.poppins_semibold,
         marginHorizontal: SPACING.space_24,
         paddingVertical: SPACING.space_12
     },
     toolTipContainer: {
-        backgroundColor: COLORS.primaryBlue,
+        backgroundColor: COLORS.primaryColor,
         height: 60,
         width: 160,
         textAlign: 'center',
@@ -58,25 +57,51 @@ const styles = StyleSheet.create({
     completedTitle: {
         color: COLORS.primaryDarkGray,
         fontSize: FONTSIZE.size_14,
+        fontFamily: FONTFAMILY.poppins_regular,
         marginVertical: SPACING.space_10
     },
     completedSubTitle: {
         color: COLORS.primaryLightGray,
-        fontSize: FONTSIZE.size_12
+        fontSize: FONTSIZE.size_12,
+        fontFamily: FONTFAMILY.poppins_light
+    },
+    headerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '90%',
+    },
+    flatListContainer: {
+        gap: 10,
+        padding: 10,
+        marginTop: SPACING.space_30,
+        ...Platform.select({
+            ios: {
+                shadowColor: COLORS.primaryLightGray,
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.2,
+                shadowRadius: 2,
+            },
+            android: {
+                elevation: 5,
+            },
+        }),
     },
     headerDateContainer: {
         marginVertical: SPACING.space_24,
-        right: 100
+        alignSelf: 'flex-start',
+        marginLeft: SPACING.space_36,
     },
     headerDate: {
         paddingVertical: SPACING.space_10,
         fontSize: FONTSIZE.size_28,
+        fontFamily: FONTFAMILY.poppins_bold,
         textAlign: 'left',
-        fontWeight: '600'
     },
     headerDateNow: {
         fontSize: FONTSIZE.size_14,
-        color: COLORS.primaryLightGray
+        color: COLORS.primaryLightGray,
+        fontFamily: FONTFAMILY.poppins_regular
     },
     deleteButton: {
         backgroundColor: COLORS.primaryRed,
@@ -88,7 +113,7 @@ const styles = StyleSheet.create({
         borderBottomEndRadius: BORDERRADIUS.radius_4
     },
     updateButton: {
-        backgroundColor: COLORS.primaryBlue,
+        backgroundColor: COLORS.primaryColor,
         borderTopEndRadius: 0,
         borderBottomEndRadius: 0,
         borderTopLeftRadius: BORDERRADIUS.radius_4,
@@ -97,6 +122,25 @@ const styles = StyleSheet.create({
     headerToggleDarkMode: {
         left: 140,
         bottom: 80
+    },
+    filterContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: SPACING.space_20,
+        borderRadius: BORDERRADIUS.radius_10,
+        height: 50,
+        width: 50,
+        ...Platform.select({
+            ios: {
+                shadowColor: COLORS.primaryLightGray,
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.2,
+                shadowRadius: 2,
+            },
+            android: {
+                elevation: 5,
+            },
+        }),
     }
 })
 

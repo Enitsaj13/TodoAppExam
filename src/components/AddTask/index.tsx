@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, StyleProp, ViewStyle, View, GestureResponderEvent } from 'react-native';
+import { StyleSheet, TouchableOpacity, StyleProp, ViewStyle, View, NativeSyntheticEvent, NativeTouchEvent } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { BORDERRADIUS, COLORS } from '@/themes/theme';
 
 interface AddTodoProps {
-    onPress?: (event: GestureResponderEvent) => void;
+    onPress?: (event: NativeSyntheticEvent<NativeTouchEvent>) => void;
     style?: StyleProp<ViewStyle>;
     checkIcon?: boolean;
     addIcon?: boolean;
@@ -24,7 +24,7 @@ const AddTodo: React.FC<AddTodoProps> = ({ onPress, style, checkIcon, addIcon })
 
 const styles = StyleSheet.create({
     containerBtnTodo: {
-        backgroundColor: COLORS.primaryBlue,
+        backgroundColor: COLORS.primaryColor,
         borderRadius: BORDERRADIUS.radius_25,
         position: 'absolute',
         bottom: 100,

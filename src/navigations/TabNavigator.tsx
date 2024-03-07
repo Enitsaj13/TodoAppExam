@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { COLORS } from '@/themes/theme';
 import TaskScreen from '@/screens/TaskScreen'
+import MyProfile from '@/screens/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -13,7 +14,7 @@ const TabNavigator = () => {
             screenOptions={{
                 tabBarHideOnKeyboard: true,
                 headerShown: false,
-                // tabBarShowLabel: false,
+                tabBarShowLabel: true,
                 tabBarStyle: styles.tabBarStyle,
             }}>
             <Tab.Screen
@@ -24,7 +25,20 @@ const TabNavigator = () => {
                         <Ionicons
                             name='browsers-outline'
                             size={22}
-                            color={`${focused ? COLORS.primaryBlue : COLORS.primaryWhite}`}
+                            color={`${focused ? COLORS.primaryColor : COLORS.primaryLightGray}`}
+                        />
+                    )
+                }}
+            />
+            <Tab.Screen
+                name="MyProfle"
+                component={MyProfile}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <Ionicons
+                            name='person-circle-outline'
+                            size={26}
+                            color={`${focused ? COLORS.primaryColor : COLORS.primaryLightGray}`}
                         />
                     )
                 }}

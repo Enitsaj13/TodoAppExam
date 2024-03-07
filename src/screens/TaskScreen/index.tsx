@@ -8,7 +8,8 @@ import {
     FlatList,
     TouchableOpacity,
     Alert,
-    Appearance
+    Appearance,
+    Platform
 } from 'react-native';
 import {
     BottomSheetModal,
@@ -20,8 +21,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Swipeable } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { SimpleLineIcons } from '@expo/vector-icons';
 import ConfettiCannon from 'react-native-confetti-cannon';
-import { COLORS } from '@/themes/theme';
+import { BORDERRADIUS, COLORS, SPACING } from '@/themes/theme';
 import AddTask from '@/components/AddTask';
 import styles from './styles';
 import TaskListContainer from '@/components/TaskContainer';
@@ -42,6 +44,7 @@ const TaskScreen: React.FC = () => {
     const [filteredTodos, setFilteredTodos] = useState<TodoItem[]>([]);
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
     const [selectedTodoId, setSelectedTodoId] = useState<string | null>(null);
+    const [userName, setUserName] = useState<string>('');
 
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     const snapPoints = useMemo(() => ['15%'], []);
@@ -86,9 +89,26 @@ const TaskScreen: React.FC = () => {
                 console.error('Error saving todos to AsyncStorage:', error);
             }
         };
-
         saveTodos();
-    }, [todos]);
+    }, [todos]); // Only re-run the effect if todos change
+
+    // Retrieve user name from AsyncStorage on component mount
+    useEffect(() => {
+        const retrieveUserName = async () => {
+            try {
+                const fullName = await AsyncStorage.getItem('name');
+                if (fullName) {
+                    // Extract the first name from the full name
+                    const firstName = fullName.split(' ')[0];
+                    setUserName(firstName);
+                }
+            } catch (error) {
+                console.error("Error retrieving user name:", error);
+            }
+        };
+
+        retrieveUserName();
+    }, []);
 
     const handlePresentModalPress = useCallback(() => {
         bottomSheetModalRef.current?.present();
@@ -187,14 +207,15 @@ const TaskScreen: React.FC = () => {
                     <Feather name="edit" size={20} color={COLORS.primaryWhite} />
                 </TouchableOpacity>
             </>
-
         );
 
         return (
             <Swipeable renderRightActions={renderRightActions}>
                 <TaskListContainer title={item.text}
                     onPress={() => handleDoneTodo(item.id)}
-                    todoStyleContainer={{ backgroundColor: theme === 'light' ? COLORS.primaryBlack : COLORS.primaryWhite }}
+                    todoStyleContainer={{
+                        backgroundColor: theme === 'light' ? COLORS.primaryBlack : COLORS.primaryWhite,
+                    }}
                 />
             </Swipeable>
         );
@@ -207,8 +228,8 @@ const TaskScreen: React.FC = () => {
             <View style={styles.headerDateContainer}>
                 <Text style={[styles.headerDate, {
                     color: `${theme === 'light' ? COLORS.primaryWhite : COLORS.primaryBlack}`
-                }]}>Today</Text>
-                <Text style={styles.headerDateNow}>{formattedDate}</Text>
+                }]}>Hi, {userName} ✋</Text>
+                <Text style={styles.headerDateNow}>Today is {formattedDate}</Text>
             </View>
             <View style={styles.headerToggleDarkMode}>
                 <TouchableOpacity onPress={toggleTheme}>
@@ -219,25 +240,32 @@ const TaskScreen: React.FC = () => {
                     />
                 </TouchableOpacity>
             </View>
-            <SearchBar onSearch={handleSearch} style={{
-                backgroundColor: `${theme === 'light' ? '#0c4a6e' : COLORS.primaryWhite}`
-            }}
-                textStyle={{
-                    color: `${theme === 'light' ? COLORS.primaryWhite : COLORS.primaryBlack}`
+            <View style={styles.headerContainer}>
+                <SearchBar onSearch={handleSearch} style={{
+                    backgroundColor: `${theme === 'light' ? '#0c4a6e' : COLORS.primaryWhite}`
                 }}
-                placeholderTextColor={theme === 'light' ? COLORS.primaryWhite : COLORS.primaryDarkGray}
-            />
+                    textStyle={{
+                        color: `${theme === 'light' ? COLORS.primaryWhite : COLORS.primaryBlack}`
+                    }}
+                    placeholderTextColor={theme === 'light' ? COLORS.primaryWhite : COLORS.primaryDarkGray}
+                />
+                <TouchableOpacity style={[styles.filterContainer, {
+                    backgroundColor: `${theme === 'light' ? '#0c4a6e' : COLORS.primaryWhite}`
+                }]}>
+                    <SimpleLineIcons name="equalizer" size={24}
+                        color={theme === 'light' ? COLORS.primaryWhite : COLORS.primaryDarkGray} // Change color based on theme
+                    />
+                </TouchableOpacity>
+            </View>
             <FlatList
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                    gap: 10, padding: 10,
-                }}
+                contentContainerStyle={styles.flatListContainer}
                 data={filteredTodos.length > 0 ? filteredTodos : todos}
                 keyExtractor={item => item.id}
                 renderItem={renderItem}
                 ListEmptyComponent={() => (
                     <View style={{
-                        alignItems: 'center', backgroundColor: `${theme === 'light' ? COLORS.primaryBlack : COLORS.primaryWhite}`
+                        alignItems: 'center', backgroundColor: `${theme === 'light' ? COLORS.primaryBlack : COLORS.primaryWhite}`,
                     }}>
                         <ConfettiCannon
                             count={200}

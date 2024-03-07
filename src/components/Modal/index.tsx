@@ -33,7 +33,7 @@ const EditTodoModal: React.FC<EditTodoModalProps> = ({ visible, onEdit, onClose,
                     <View style={styles.buttonContainer}>
                         <Button title="Save"
                             onPress={handleEdit}
-                            color={COLORS.primaryBlue}
+                            color={COLORS.primaryColor}
                         />
                         <Button title="Cancel"
                             onPress={onClose}

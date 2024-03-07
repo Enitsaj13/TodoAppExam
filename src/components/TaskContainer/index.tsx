@@ -13,6 +13,7 @@ interface TaskTitleProps {
 }
 
 const TaskListContainer: React.FC<TaskTitleProps> = ({ title, todoStyleContainer }) => {
+
     const [isFinished, setIsFinished] = useState<boolean>(false);
     const [isPriority, setPriority] = useState<boolean>(false);
 
@@ -72,4 +73,4 @@ const TaskListContainer: React.FC<TaskTitleProps> = ({ title, todoStyleContainer
 }
 
 
-export default TaskListContainer
+export default TaskListContainer;

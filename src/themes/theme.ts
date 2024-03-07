@@ -1,3 +1,7 @@
+import { useCallback, useEffect, useState } from 'react';
+import * as Font from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+
 interface Spacing {
     space_2: number;
     space_4: number;
@@ -13,6 +17,7 @@ interface Spacing {
     space_30: number;
     space_32: number;
     space_36: number;
+    space_40: number;
 }
 
 export const SPACING: Spacing = {
@@ -30,13 +35,17 @@ export const SPACING: Spacing = {
     space_30: 30,
     space_32: 32,
     space_36: 36,
+    space_40: 40,
 };
+
+// Define other theme constants here...
 
 interface Color {
     primaryBlack: string;
     primaryLightGray: string;
-    primaryDarkGray: string
-    primaryBlue: string;
+    primaryDarkGray: string;
+    primaryColor: string;
+    secondaryColor: string;
     primaryRed: string;
     primaryWhite: string;
     primarySecondaryWhite: string;
@@ -46,34 +55,11 @@ export const COLORS: Color = {
     primaryBlack: '#0f172a',
     primaryLightGray: '#64748b',
     primaryDarkGray: '#374151',
-    primaryBlue: '#0b80d4',
+    primaryColor: '#0b80d4',
+    secondaryColor: '#ef4444',
     primaryRed: '#b91c1c',
     primaryWhite: '#FFFFFF',
-    primarySecondaryWhite: '#fafafa',
-};
-
-interface FontFamily {
-    poppins_black: string;
-    poppins_bold: string;
-    poppins_extrabold: string;
-    poppins_extralight: string;
-    poppins_light: string;
-    poppins_medium: string;
-    poppins_regular: string;
-    poppins_semibold: string;
-    poppins_thin: string;
-}
-
-export const FONTFAMILY: FontFamily = {
-    poppins_black: 'Poppins-Black',
-    poppins_bold: 'Poppins-Bold',
-    poppins_extrabold: 'Poppins-ExtraBold',
-    poppins_extralight: 'Poppins-ExtraLight',
-    poppins_light: 'Poppins-Light',
-    poppins_medium: 'Poppins-Medium',
-    poppins_regular: 'Poppins-Regular',
-    poppins_semibold: 'Poppins-SemiBold',
-    poppins_thin: 'Poppins-Thin',
+    primarySecondaryWhite: '#d1d5db',
 };
 
 interface FontSize {
@@ -109,6 +95,9 @@ interface BorderRadius {
     radius_15: number;
     radius_20: number;
     radius_25: number;
+    radius_30: number;
+    radius_40: number;
+    radius_50: number;
 }
 
 export const BORDERRADIUS: BorderRadius = {
@@ -118,4 +107,63 @@ export const BORDERRADIUS: BorderRadius = {
     radius_15: 15,
     radius_20: 20,
     radius_25: 25,
+    radius_30: 30,
+    radius_40: 40,
+    radius_50: 50,
+};
+
+interface FontFamily {
+    poppins_bold: string;
+    poppins_semibold: string;
+    poppins_light: string;
+    poppins_regular: string;
+}
+
+export const FONTFAMILY: FontFamily = {
+    poppins_bold: 'Poppins-Bold',
+    poppins_semibold: 'Poppins-SemiBold',
+    poppins_regular: 'Poppins-Regular',
+    poppins_light: 'Poppins-Light',
+};
+
+// Define other theme constants here...
+
+interface ThemeState {
+    fontsLoaded: boolean;
+    fontError: boolean;
+}
+
+export const useTheme = () => {
+    const [themeState, setThemeState] = useState<ThemeState>({
+        fontsLoaded: false,
+        fontError: false,
+    });
+
+    const loadFonts = useCallback(async () => {
+        try {
+            await Font.loadAsync({
+                'Poppins-Bold': require('@/assets/fonts/Poppins-Bold.ttf'),
+                'Poppins-SemiBold': require('@/assets/fonts/Poppins-SemiBold.ttf'),
+                'Poppins-Regular': require('@/assets/fonts/Poppins-Regular.ttf'),
+                'Poppins-Light': require('@/assets/fonts/Poppins-Light.ttf'),
+            });
+            setThemeState({ ...themeState, fontsLoaded: true });
+        } catch (error) {
+            console.warn(error);
+            setThemeState({ ...themeState, fontError: true });
+        }
+    }, []);
+
+    const onLayoutRootView = useCallback(async () => {
+        if (themeState.fontsLoaded || themeState.fontError) {
+            await SplashScreen.hideAsync();
+        }
+    }, [themeState.fontsLoaded, themeState.fontError]);
+
+    useEffect(() => {
+        loadFonts();
+        onLayoutRootView();
+    }, []);
+
+    return themeState;
 };

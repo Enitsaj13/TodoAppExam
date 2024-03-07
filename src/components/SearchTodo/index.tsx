@@ -1,5 +1,4 @@
 // SearchBar.tsx
-
 import React, { useState } from 'react';
 import {
     View,
@@ -10,20 +9,20 @@ import {
     StyleProp,
     TextStyle,
     Platform,
-    TextInputProps,
     ColorValue
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { BORDERRADIUS, COLORS, FONTSIZE, SPACING } from '@/themes/theme';
+import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '@/themes/theme';
 
-interface SearchBarProps extends TextInputProps {
+interface SearchBarProps {
     onSearch: (text: string) => void;
     style?: StyleProp<ViewStyle>;
     textStyle?: StyleProp<TextStyle>;
     placeholderTextColor?: ColorValue | undefined;
 }
 
-const SearchBar: React.FC<SearchBarProps & TextInputProps> = ({ onSearch, style, textStyle, placeholderTextColor }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, style, textStyle, placeholderTextColor }) => {
+
     const [searchText, setSearchText] = useState('');
 
     const handleSearch = () => {
@@ -51,13 +50,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        alignSelf: 'center',
         height: 50,
         backgroundColor: COLORS.primaryWhite,
         borderRadius: BORDERRADIUS.radius_10,
-        marginHorizontal: SPACING.space_10,
-        marginBottom: SPACING.space_10,
-        width: '90%',
+        width: '75%',
         ...Platform.select({
             ios: {
                 shadowColor: COLORS.primaryLightGray,
@@ -74,7 +70,8 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: SPACING.space_16,
         paddingVertical: SPACING.space_8,
-        fontSize: FONTSIZE.size_16
+        fontSize: FONTSIZE.size_16,
+        fontFamily: FONTFAMILY.poppins_regular
     },
     button: {
         padding: SPACING.space_10
